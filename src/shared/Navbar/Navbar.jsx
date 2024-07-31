@@ -1,7 +1,19 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../src/assets/logo.svg";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider/AuthProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const navItems = (
     <>
       <li>
@@ -54,6 +66,20 @@ const Navbar = () => {
           Contact
         </NavLink>
       </li>
+      {user ? (
+        <>
+        <li>
+          <Link onClick={handleLogout}>Logout</Link>
+        </li>
+        <li>
+          <Link to='/carts'>My carts</Link>
+        </li>
+        </>
+      ) : (
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+      )}
     </>
   );
 
@@ -89,10 +115,17 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 text-sm font-semibold">{navItems}</ul>
+        <ul className="menu menu-horizontal px-1 text-sm font-semibold">
+          {navItems}
+        </ul>
       </div>
       <div className="navbar-end">
-        <Link to='/appointment' className="text-sm font-semibold text-orange-600 border px-4 py-2 rounded border-orange-600  hover:shadow-2xl">Appointment</Link>
+        <Link
+          to="/appointment"
+          className="text-sm font-semibold text-orange-600 border px-4 py-2 rounded border-orange-600  hover:shadow-2xl"
+        >
+          Appointment
+        </Link>
       </div>
     </div>
   );

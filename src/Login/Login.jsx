@@ -1,18 +1,28 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import login from '../../src/assets/images/login/login.svg'
 import { useContext } from 'react';
 import { AuthContext } from '../Provider/AuthProvider/AuthProvider';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const Login = () => {
     const {loginWithGoogle,userLogin} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const googleLogin = () =>{
         loginWithGoogle()
         .then(result=>{
-            console.log(result.user)
+          console.log(result)
+          Swal.fire({
+            title: "Login!",
+            text: "Successful",
+            icon: "success"
+          });
+          navigate(location?.state ? location?.state : '/')
         })
         .then(error=>{
-            console.log(error.message)
+          console.log(error.message)
         })
     }
    
@@ -24,12 +34,28 @@ const Login = () => {
 
         userLogin(email,password)
         .then(result=>{
-            console.log(result.user)
+          const loggedUser = result.user;
+          console.log(loggedUser);
+          const user = {email};
+          axios.post('http://localhost:1101/jwt',user,{withCredentials:true})
+          .then(res=>{
+            console.log(res.data)
+            if(res.data.success){
+              navigate(location?.state ? location?.state : '/')
+            }
+          })
+            Swal.fire({
+              title: "Login!",
+              text: "Successful",
+              icon: "success"
+            });
+
         })
         .catch(error=>{
             console.log(error.message)
         })
     }
+
     
   return (
     <div className="hero">

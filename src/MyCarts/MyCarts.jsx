@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Provider/AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const MyCarts = () => {
   const { user } = useContext(AuthContext);
@@ -8,9 +9,8 @@ const MyCarts = () => {
 
   const url = `http://localhost:1101/checkOuts?email=${user?.email}`;
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setCarts(data));
+    axios(url,{withCredentials:true})
+    .then(res=>setCarts(res.data))
   }, [url]);
 
   const handleDelete = (id) => {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const ServiceCard = ({ service }) => {
   const { _id, title, price, img } = service || {};
   return (
-    <Link to={`/checkOut/${_id}`}>
+    <Link to={`/serviceDetails/${_id}`}>
       <div className="card glass  p-4 border">
         <figure>
           <img className="h-full" src={img} alt="Shoes" />

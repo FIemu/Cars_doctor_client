@@ -6,6 +6,7 @@ import Register from "../Register/Register";
 import CheckOut from "../CheckOut/CheckOut";
 import MyCarts from "../MyCarts/MyCarts";
 import PrivateRoute from "../Private/PrivateRoute";
+import ServiceDetails from "../Pages/Home/ServiceDetails/ServiceDetails";
 
 
 const Route = createBrowserRouter([
@@ -32,6 +33,11 @@ const Route = createBrowserRouter([
             {
                 path:'/checkOut/:id',
                 element:<PrivateRoute><CheckOut/></PrivateRoute>,
+                loader:({params})=> fetch(`http://localhost:1101/services/${params.id}`)
+            },
+            {
+                path:'/serviceDetails/:id',
+                element:<PrivateRoute><ServiceDetails/></PrivateRoute>,
                 loader:({params})=> fetch(`http://localhost:1101/services/${params.id}`)
             }
         ]
